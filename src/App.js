@@ -20,7 +20,7 @@ class App extends React.Component {
 
 		return (
 			<div className="App">
-				<h3>LISP Paren Linter</h3>
+				<h3>LISP Paren Checker</h3>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						Enter your LISP code below: <br/><br/>
@@ -44,10 +44,7 @@ class App extends React.Component {
 
 	handleSubmit(event) {
 
-
 		event.preventDefault();
-
-
 
 		if (!this.iterateString(this.state.input)) {
 			this.setState({
@@ -58,7 +55,6 @@ class App extends React.Component {
 				message: 'Valid :)'
 			})
 		}
-
 
 	}
 
