@@ -20,19 +20,14 @@ class App extends React.Component {
 
 		return (
 			<div className="App">
-				<p>Hi reader, I decided to not make this first assignment LISP specific, meaning I did not think it was
-					necessary to do any parsing
-					or interpreting to make sure that the parens are closed up inside the string.
-
-					It is just a string after all, and from the very little I know about LISP,
-					open parens need to have close parens. So that's all I'm considering here.</p>
+				<h3>LISP Paren Linter</h3>
 				<form onSubmit={this.handleSubmit}>
 					<label>
-						Enter your LISP code below: <br/>
+						Enter your LISP code below: <br/><br/>
 					</label>
 					<textarea value={this.state.input} onChange={this.handleChange}/> <br/>
 					<input type="submit" value="Submit"/>
-					<p>{this.state.message}</p>
+					<h4>{this.state.message}</h4>
 				</form>
 			</div>
 		)
@@ -51,13 +46,16 @@ class App extends React.Component {
 
 
 		event.preventDefault();
+
+
+
 		if (!this.iterateString(this.state.input)) {
 			this.setState({
-				message: 'Code is not valid, open paren(s) exist'
+				message: 'Invalid :('
 			})
 		} else {
 			this.setState({
-				message: 'Code is valid, parens all closed up'
+				message: 'Valid :)'
 			})
 		}
 
@@ -68,8 +66,12 @@ class App extends React.Component {
 
 		let foundIndex = input.indexOf('(');
 
+		let remainingCloseParens = input.split(')').length-1;
+
 		if (foundIndex < 0) {
-			return true;
+
+			return (remainingCloseParens === 0);
+
 		} else {
 
 			let foundMatching = this.findAndMatchClosingBracket(input, foundIndex);
@@ -78,7 +80,7 @@ class App extends React.Component {
 				return false;
 			}
 
-			input = input.slice(0, foundIndex) + input.slice(foundIndex + 1);
+			input = input.replace("(", "").replace(")", "");
 
 			return this.iterateString(input);
 
