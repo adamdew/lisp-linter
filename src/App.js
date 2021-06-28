@@ -60,24 +60,39 @@ class App extends React.Component {
 
 	iterateString(input) {
 
+
 		let foundIndex = input.indexOf('(');
 
-		let remainingCloseParens = input.split(')').length-1;
+		/*
+		Checking for remaining close parens makes more sense when you look at it 
+		from the perspective of the 1st recursion.
+		*/
+		let remainingCloseParens = input.split(')').length - 1;
 
+		//if we dont find any more open parens
 		if (foundIndex < 0) {
 
+			/*
+			Return true if there are also no more close parens, 
+			a remaining close parens indicates invalid code
+			*/
 			return (remainingCloseParens === 0);
 
 		} else {
 
-			let foundMatching = this.findAndMatchClosingBracket(input, foundIndex);
+			/*
+			Return the index of the found closing paren. If you dont find one, code is invalid. 
+			*/
+			let foundMatching = this.findAndMatchClosingParen(input, foundIndex);
 
 			if (foundMatching < 0) {
 				return false;
 			}
 
+			//take away a set of parens since we found a match already
 			input = input.replace("(", "").replace(")", "");
 
+			//recurse back in with the new input
 			return this.iterateString(input);
 
 		}
@@ -87,20 +102,17 @@ class App extends React.Component {
 
 	findAndMatchClosingBracket(str, pos) {
 
+		let scopeIndex = 1;
 
-		if (str[pos] !== '(') {
-			throw new Error("No '(' at index " + pos);
-		}
-		let depth = 1;
-
-		//lets kick it old school and avoid Array.map/filter here, in this case it makes the code more self documenting.
 		for (let i = pos + 1; i < str.length; i++) {
 			switch (str[i]) {
+				//if we have an open paren then dive deeper into a new scope level
 				case '(':
-					depth++;
+					scopeIndex++;
 					break;
+				//if we have a close paren then bring scope up and return it's index
 				case ')':
-					if (--depth === 0) {
+					if (--scopeIndex === 0) {
 						return i;
 					}
 					break;
@@ -108,7 +120,7 @@ class App extends React.Component {
 					break;
 			}
 		}
-		return -1;    // No matching closing parenthesis
+		return -1;    // No matching closing paren
 	}
 }
 
