@@ -64,7 +64,7 @@ class App extends React.Component {
 		let foundIndex = input.indexOf('(');
 
 		/*
-		Checking for remaining close parens makes more sense when you look at it 
+		Checking for remaining close parens makes more sense when you look at it
 		from the perspective of the 1st recursion.
 		*/
 		let remainingCloseParens = input.split(')').length - 1;
@@ -73,7 +73,7 @@ class App extends React.Component {
 		if (foundIndex < 0) {
 
 			/*
-			Return true if there are also no more close parens, 
+			Return true if there are also no more close parens,
 			a remaining close parens indicates invalid code
 			*/
 			return (remainingCloseParens === 0);
@@ -81,9 +81,9 @@ class App extends React.Component {
 		} else {
 
 			/*
-			Return the index of the found closing paren. If you dont find one, code is invalid. 
+			Return the index of the found closing paren. If you dont find one, code is invalid.
 			*/
-			let foundMatching = this.findAndMatchClosingParen(input, foundIndex);
+			let foundMatching = this.findAndMatchClosingBracket(input, foundIndex);
 
 			if (foundMatching < 0) {
 				return false;
